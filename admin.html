@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Dashboard Admin — Donatur Kanopi An-Nuur</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- LOGIN -->
+  <div class="login" id="loginView">
+    <form class="card" id="loginForm" autocomplete="on">
+      <img src="assets/logo.png" alt="Logo">
+      <h1>Dashboard Admin</h1>
+      <p class="muted">Donatur Kanopi Masjid An-Nuur Kotagede</p>
+      <label for="pw">Password</label>
+      <input id="pw" type="password" autocomplete="current-password" required autofocus>
+      <div class="err" id="loginErr" role="alert"></div>
+      <button class="btn" id="btnLogin" style="width:100%;margin-top:8px">Masuk</button>
+      <p class="muted center" style="margin:14px 0 0;font-size:13px" id="demoHint"></p>
+      <p class="center" style="margin:6px 0 0;font-size:13px"><a href="index.html">← Kembali ke portal</a></p>
+    </form>
+  </div>
+
+  <!-- APP -->
+  <div id="appView" class="hidden">
+    <header class="topbar">
+      <div class="wrap">
+        <img src="assets/logo.png" alt="Logo">
+        <div class="brand">Dashboard Admin<small>Kanopi Islamic Centre An-Nuur</small></div>
+        <span class="spacer"></span>
+        <a href="index.html" target="_blank" rel="noopener">Lihat Portal</a>
+        <button class="link" id="btnLogout">Keluar</button>
+      </div>
+    </header>
+
+    <div class="wrap" style="padding-bottom:40px">
+      <nav class="tabs" role="tablist">
+        <button class="on" data-tab="ringkasan">Ringkasan</button>
+        <button data-tab="data">Data Donasi</button>
+        <button data-tab="setting">Pengaturan</button>
+      </nav>
+
+      <!-- RINGKASAN -->
+      <section id="tab-ringkasan">
+        <div class="grid stats" id="stats"></div>
+        <div class="grid two">
+          <div class="card"><h3>Penerimaan per Tanggal</h3><div class="chartbox"><canvas id="chHarian"></canvas></div></div>
+          <div class="card"><h3>Cash vs Transfer</h3><div class="chartbox"><canvas id="chMetode"></canvas></div></div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <h3>5 Transaksi Terbaru</h3>
+          <div class="tablewrap"><table style="min-width:520px"><tbody id="recent"></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- DATA -->
+      <section id="tab-data" class="hidden">
+        <div class="card">
+          <div class="toolbar">
+            <input class="grow" id="q" type="search" placeholder="Cari donatur / keterangan…">
+            <select id="fMetode">
+              <option value="">Semua</option><option value="tf">Transfer masuk</option>
+              <option value="cash">Cash masuk</option><option value="keluar">Pengeluaran</option>
+            </select>
+            <button class="btn" id="btnAdd">+ Tambah</button>
+            <button class="btn ghost" id="btnCsv">Unduh CSV</button>
+            <button class="btn ghost" id="btnPrint">Cetak</button>
+          </div>
+          <div class="tablewrap">
+            <table>
+              <thead><tr>
+                <th>No</th><th>Tanggal</th><th>Donatur</th><th>Cara Bayar</th><th>Bank/Penerima</th>
+                <th class="num">Masuk Cash</th><th class="num">Masuk TF</th><th class="num">Keluar</th>
+                <th class="num">Saldo</th><th>Keterangan</th><th class="no-print">Aksi</th>
+              </tr></thead>
+              <tbody id="tbody"></tbody>
+              <tfoot id="tfoot"></tfoot>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PENGATURAN -->
+      <section id="tab-setting" class="hidden">
+        <form class="card" id="cfgForm" style="max-width:720px">
+          <h2>Pengaturan Portal</h2>
+          <label for="cJudul">Judul</label><input id="cJudul" required maxlength="200">
+          <label for="cSub">Sub judul</label><textarea id="cSub" rows="2" maxlength="400"></textarea>
+          <div class="form-grid">
+            <div><label for="cCut">Tanggal cut off</label><input id="cCut" type="date" required></div>
+            <div><label for="cTarget">Target dana (Rp, 0 = sembunyikan)</label><input id="cTarget" type="number" min="0" step="1000"></div>
+            <div class="full"><label for="cNama">Tampilan nama donatur di portal publik</label>
+              <select id="cNama">
+                <option value="penuh">Nama lengkap</option>
+                <option value="singkat">Disingkat (Hudi R***)</option>
+                <option value="sembunyi">Hamba Allah (disembunyikan)</option>
+              </select></div>
+          </div>
+          <label for="cRek">Informasi rekening / cara donasi</label><textarea id="cRek" rows="3" maxlength="500"></textarea>
+          <label for="cKontak">Kontak panitia</label><textarea id="cKontak" rows="2" maxlength="500"></textarea>
+          <div style="margin-top:16px"><button class="btn">Simpan Pengaturan</button></div>
+          <p class="muted" style="font-size:13px;margin-bottom:0">Catatan: kolom Keterangan internal tidak pernah ditampilkan di portal publik.</p>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <!-- DIALOG TAMBAH/EDIT -->
+  <dialog id="dlg">
+    <form id="form" method="dialog">
+      <h3 id="dlgTitle">Tambah Transaksi</h3>
+      <div class="form-grid">
+        <div><label for="fTanggal">Tanggal</label><input id="fTanggal" type="date" required></div>
+        <div><label for="fJenis">Jenis</label>
+          <select id="fJenis"><option value="masuk">Dana masuk (donasi)</option><option value="keluar">Dana keluar (pengeluaran)</option></select></div>
+        <div class="full"><label for="fDonatur">Nama donatur / uraian</label><input id="fDonatur" required maxlength="120" placeholder="mis. Hudi Riyanto"></div>
+        <div><label for="fMetodeBayar">Metode</label>
+          <select id="fMetodeBayar"><option value="tf">Transfer (TF)</option><option value="cash">Cash</option></select></div>
+        <div><label for="fNominal">Nominal (Rp)</label><input id="fNominal" type="number" min="1" step="1" required inputmode="numeric"></div>
+        <div><label for="fCara">Cara bayar</label><input id="fCara" list="dlCara" maxlength="60" placeholder="TF.Mandiri / Cash">
+          <datalist id="dlCara"><option value="Cash"><option value="TF.Mandiri"><option value="TF.BNI"><option value="TF.BSI"><option value="TF.Dana"><option value="TF.Mandiri Taspen"><option value="TF.Byond BSI"></datalist></div>
+        <div><label for="fBank">Bank / penerima</label><input id="fBank" list="dlBank" maxlength="60" placeholder="BSI An Nuur">
+          <datalist id="dlBank"><option value="BSI An Nuur"></datalist></div>
+        <div class="full"><label for="fKet">Keterangan (internal)</label><input id="fKet" maxlength="200" placeholder="mis. jam transfer, nama pengantar"></div>
+      </div>
+      <div class="err" id="formErr" role="alert"></div>
+      <div class="dlg-actions">
+        <button type="button" class="btn ghost" id="btnCancel">Batal</button>
+        <button type="submit" class="btn" id="btnSave">Simpan</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/demo.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/admin.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Donatur Kanopi Islamic Centre Masjid An-Nuur Kotagede</title>
+  <meta name="description" content="Informasi transparan donatur pembangunan kanopi Islamic Centre Masjid An-Nuur Kotagede, Yogyakarta.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <img src="assets/logo.png" alt="Logo">
+      <div class="brand">Masjid An-Nuur Kotagede<small>Islamic Centre · Pembangunan Kanopi</small></div>
+      <span class="spacer"></span>
+      <a href="admin.html">Admin</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <span class="badge" id="cutoff">Cut off: …</span>
+      <h1 id="judul">Donatur Pembangunan Kanopi Islamic Centre Masjid An-Nuur Kotagede</h1>
+      <p id="subjudul"></p>
+    </div>
+  </section>
+
+  <main class="wrap pull">
+    <div id="demoNote" class="note hidden" style="margin-bottom:14px">Mode demo: data tersimpan di browser ini saja. Isi <code>API_URL</code> di <code>js/config.js</code> untuk memakai Google Sheet.</div>
+    <div id="loadErr" class="note hidden" style="margin-bottom:14px;background:#fdecea;border-color:#f5c2be"></div>
+
+    <section class="grid stats" id="stats" aria-live="polite"></section>
+
+    <section class="card" id="targetCard" style="margin-top:16px">
+      <h2>Progres Pengumpulan Dana</h2>
+      <div class="progress"><i id="bar" style="width:0%"></i></div>
+      <div class="muted" id="barText"></div>
+    </section>
+
+    <section class="grid two">
+      <div class="card no-print"><h3>Penerimaan per Tanggal</h3><div class="chartbox"><canvas id="chHarian"></canvas></div></div>
+      <div class="card no-print"><h3>Cash vs Transfer</h3><div class="chartbox"><canvas id="chMetode"></canvas></div></div>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <h2>Daftar Donatur</h2>
+      <div class="toolbar">
+        <input class="grow" id="q" type="search" placeholder="Cari nama donatur…" aria-label="Cari donatur">
+        <select id="fMetode" aria-label="Filter metode">
+          <option value="">Semua metode</option>
+          <option value="tf">Transfer</option>
+          <option value="cash">Cash</option>
+        </select>
+        <button class="btn ghost" id="btnPrint">Cetak</button>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>No</th><th>Tanggal</th><th>Donatur</th><th>Cara Bayar</th><th>Penerima</th><th class="num">Cash</th><th class="num">Transfer</th><th class="num">Saldo</th></tr>
+          </thead>
+          <tbody id="tbody"><tr><td colspan="8" class="empty">Memuat data…</td></tr></tbody>
+          <tfoot id="tfoot"></tfoot>
+        </table>
+      </div>
+    </section>
+
+    <section class="info">
+      <div class="card"><h3>Salurkan Donasi</h3><p id="infoRek" class="muted" style="white-space:pre-line;margin:0"></p></div>
+      <div class="card"><h3>Kontak Panitia</h3><p id="kontak" class="muted" style="white-space:pre-line;margin:0">-</p></div>
+    </section>
+  </main>
+
+  <footer>
+    <div>Masjid An-Nuur Kotagede · Jl. Pelemsari 105, Prenggan, Kotagede, Yogyakarta</div>
+    <div>Jazakumullahu khairan atas kedermawanan Bapak/Ibu sekalian.</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/demo.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/public.js" defer></script>
+</body>
+</html>
